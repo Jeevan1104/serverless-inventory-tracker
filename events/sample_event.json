@@ -1,0 +1,6 @@
+{
+  "body": "{\"name\": \"Laptop\", \"quantity\": 15, \"category\": \"electronics\"}",
+  "httpMethod": "POST",
+  "path": "/add",
+  "isBase64Encoded": false
+}

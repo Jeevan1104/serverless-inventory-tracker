@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Inventory Tracker
+
+Resources:
+  InventoryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Inventory
+      AttributeDefinitions:
+        - AttributeName: item_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: item_id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  AddItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/
+      Handler: add_item.lambda_handler
+      Runtime: python3.10
+      Events:
+        AddItem:
+          Type: Api
+          Properties:
+            Path: /add
+            Method: post
+
+  UpdateItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/
+      Handler: update_item.lambda_handler
+      Runtime: python3.10
+      Events:
+        UpdateItem:
+          Type: Api
+          Properties:
+            Path: /update/{item_id}
+            Method: put
+
+  DeleteItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/
+      Handler: delete_item.lambda_handler
+      Runtime: python3.10
+      Events:
+        DeleteItem:
+          Type: Api
+          Properties:
+            Path: /delete/{item_id}
+            Method: delete
+
+  GetInventoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/
+      Handler: get_inventory.lambda_handler
+      Runtime: python3.10
+      Events:
+        GetInventory:
+          Type: Api
+          Properties:
+            Path: /inventory
+            Method: get
